@@ -21,14 +21,14 @@ export class BrokerService {
       });
 
       this.consumer = await this.memphisService.consumer({
-        stationName: '',
-        consumerName: '',
-        consumerGroup: '',
+        stationName: 'chat',
+        consumerName: 'chatConsumer',
+        consumerGroup: 'chatConsumers',
       });
 
       this.producer = await this.memphisService.producer({
-        stationName: '',
-        producerName: '',
+        stationName: 'chat',
+        producerName: 'chatProducer',
       });
     } catch (error) {
       console.error(error);
