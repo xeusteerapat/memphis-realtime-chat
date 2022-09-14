@@ -4,6 +4,9 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { BrokerModule } from './broker/broker.module';
 import { ChatMessageModule } from './chat-message/chat-message.module';
+import { join } from 'path';
+import { ClientsModule, Transport } from '@nestjs/microservices';
+import { ClientController } from './client/client.controller';
 
 @Module({
   imports: [
@@ -12,8 +15,18 @@ import { ChatMessageModule } from './chat-message/chat-message.module';
     }),
     BrokerModule,
     ChatMessageModule,
+    ClientsModule.register([
+      {
+        name: 'CHAT_MESSAGE',
+        transport: Transport.GRPC,
+        options: {
+          package: 'ChatMessage',
+          protoPath: join(__dirname, 'chat-message/chat-message.proto'),
+        },
+      },
+    ]),
   ],
-  controllers: [AppController],
+  controllers: [AppController, ClientController],
   providers: [AppService],
 })
 export class AppModule {}
